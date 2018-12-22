@@ -18,6 +18,7 @@ def do_coco_evaluation(
     iou_types,
     expected_results,
     expected_results_sigma_tol,
+    cat_ids=None,
 ):
     logger = logging.getLogger("maskrcnn_benchmark.inference")
 
@@ -54,7 +55,7 @@ def do_coco_evaluation(
             if output_folder:
                 file_path = os.path.join(output_folder, iou_type + ".json")
             res = evaluate_predictions_on_coco(
-                dataset.coco, coco_results[iou_type], file_path, iou_type
+                dataset.coco, coco_results[iou_type], file_path, iou_type, cat_ids
             )
             results.update(res)
     logger.info(results)
@@ -270,7 +271,7 @@ def evaluate_box_proposals(
 
 
 def evaluate_predictions_on_coco(
-    coco_gt, coco_results, json_result_file, iou_type="bbox"
+    coco_gt, coco_results, json_result_file, iou_type="bbox", cat_ids=None
 ):
     import json
 
@@ -284,6 +285,8 @@ def evaluate_predictions_on_coco(
 
     # coco_dt = coco_gt.loadRes(coco_results)
     coco_eval = COCOeval(coco_gt, coco_dt, iou_type)
+    if cat_ids is not None:
+        coco_eval.params.catIds = cat_ids
     coco_eval.evaluate()
     coco_eval.accumulate()
     coco_eval.summarize()

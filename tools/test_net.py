@@ -27,6 +27,7 @@ def main():
         help="path to config file",
     )
     parser.add_argument("--local_rank", type=int, default=0)
+    parser.add_argument("--test-person", action='store_true', default=False)
     parser.add_argument(
         "opts",
         help="Modify config options using the command-line",
@@ -75,6 +76,7 @@ def main():
             mkdir(output_folder)
             output_folders[idx] = output_folder
     data_loaders_val = make_data_loader(cfg, is_train=False, is_distributed=distributed)
+    cat_ids = [1] if args.test_person else None
     for output_folder, dataset_name, data_loader_val in zip(output_folders, dataset_names, data_loaders_val):
         inference(
             model,
@@ -86,6 +88,7 @@ def main():
             expected_results=cfg.TEST.EXPECTED_RESULTS,
             expected_results_sigma_tol=cfg.TEST.EXPECTED_RESULTS_SIGMA_TOL,
             output_folder=output_folder,
+            cat_ids=cat_ids,
         )
         synchronize()
 

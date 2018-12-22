@@ -61,6 +61,7 @@ def inference(
         expected_results=(),
         expected_results_sigma_tol=4,
         output_folder=None,
+        cat_ids=None,
 ):
     # convert to a torch.device for efficiency
     device = torch.device(device)
@@ -96,6 +97,7 @@ def inference(
         iou_types=iou_types,
         expected_results=expected_results,
         expected_results_sigma_tol=expected_results_sigma_tol,
+        cat_ids=cat_ids,
     )
 
     return evaluate(dataset=dataset,
