@@ -83,8 +83,7 @@ def prepare_for_coco_detection(predictions, dataset):
         scores = prediction.get_field("scores").tolist()
         labels = prediction.get_field("labels").tolist()
 
-        mapped_labels = [dataset.contiguous_category_id_to_json_id[i] for i in labels]
-
+        mapped_labels = [dataset.contiguous_category_id_to_json_id.get(i, None) for i in labels]
         coco_results.extend(
             [
                 {
@@ -93,7 +92,7 @@ def prepare_for_coco_detection(predictions, dataset):
                     "bbox": box,
                     "score": scores[k],
                 }
-                for k, box in enumerate(boxes)
+                for k, box in enumerate(boxes) if mapped_labels[k] is not None
             ]
         )
     return coco_results

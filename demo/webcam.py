@@ -1,6 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 import argparse
 import cv2
+import os
 
 from maskrcnn_benchmark.config import cfg
 from predictor import COCODemo
@@ -64,17 +65,30 @@ def main():
         min_image_size=args.min_image_size,
     )
 
-    cam = cv2.VideoCapture(0)
+    # cam = cv2.VideoCapture(0)
+    cam = FolderCapture('/data/PoseTrack/posetrack_data/images/val/016239_mpii_test')
     while True:
         start_time = time.time()
         ret_val, img = cam.read()
         composite = coco_demo.run_on_opencv_image(img)
         print("Time: {:.2f} s / img".format(time.time() - start_time))
         cv2.imshow("COCO detections", composite)
-        if cv2.waitKey(1) == 27:
+        if cv2.waitKey(1) == ord('q'):
             break  # esc to quit
     cv2.destroyAllWindows()
 
+
+class FolderCapture(object):
+    def __init__(self, path):
+        self.path = path
+        self.image_name = sorted(os.listdir(path))
+        self._index = -1
+
+    def read(self):
+        self._index = (self._index + 1) % len(self.image_name)
+        image_file = os.path.join(self.path, self.image_name[self._index])
+        image = cv2.imread(image_file, cv2.IMREAD_COLOR)
+        return True, image
 
 if __name__ == "__main__":
     main()
