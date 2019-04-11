@@ -7,6 +7,10 @@ import os
 class DatasetCatalog(object):
     DATA_DIR = "data"
     DATASETS = {
+        'PILSNU': {
+            "img_dir": "PILSNU/frames",
+            "ann_file": "PILSNU/coco_annotations/image_names.json"
+        },
         "posetrack_2018_train": {
             "img_dir": "posetrack",
             "ann_file": "posetrack/coco_annotations/posetrack_instances_train.json"
@@ -100,7 +104,7 @@ class DatasetCatalog(object):
 
     @staticmethod
     def get(name):
-        if "coco" in name or "posetrack" in name:
+        if "coco" in name or "posetrack" in name or 'PILSNU' in name:
             data_dir = DatasetCatalog.DATA_DIR
             attrs = DatasetCatalog.DATASETS[name]
             args = dict(
