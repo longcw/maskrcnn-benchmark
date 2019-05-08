@@ -18,6 +18,7 @@ def do_coco_evaluation(
     iou_types,
     expected_results,
     expected_results_sigma_tol,
+    cat_ids=None,
 ):
     logger = logging.getLogger("maskrcnn_benchmark.inference")
 
@@ -57,7 +58,7 @@ def do_coco_evaluation(
             if output_folder:
                 file_path = os.path.join(output_folder, iou_type + ".json")
             res = evaluate_predictions_on_coco(
-                dataset.coco, coco_results[iou_type], file_path, iou_type
+                dataset.coco, coco_results[iou_type], file_path, iou_type, cat_ids
             )
             results.update(res)
     logger.info(results)
@@ -85,8 +86,7 @@ def prepare_for_coco_detection(predictions, dataset):
         scores = prediction.get_field("scores").tolist()
         labels = prediction.get_field("labels").tolist()
 
-        mapped_labels = [dataset.contiguous_category_id_to_json_id[i] for i in labels]
-
+        mapped_labels = [dataset.contiguous_category_id_to_json_id.get(i, None) for i in labels]
         coco_results.extend(
             [
                 {
@@ -95,7 +95,7 @@ def prepare_for_coco_detection(predictions, dataset):
                     "bbox": box,
                     "score": scores[k],
                 }
-                for k, box in enumerate(boxes)
+                for k, box in enumerate(boxes) if mapped_labels[k] is not None
             ]
         )
     return coco_results
@@ -303,7 +303,7 @@ def evaluate_box_proposals(
 
 
 def evaluate_predictions_on_coco(
-    coco_gt, coco_results, json_result_file, iou_type="bbox"
+    coco_gt, coco_results, json_result_file, iou_type="bbox", cat_ids=None
 ):
     import json
 
@@ -317,6 +317,8 @@ def evaluate_predictions_on_coco(
 
     # coco_dt = coco_gt.loadRes(coco_results)
     coco_eval = COCOeval(coco_gt, coco_dt, iou_type)
+    if cat_ids is not None:
+        coco_eval.params.catIds = cat_ids
     coco_eval.evaluate()
     coco_eval.accumulate()
     coco_eval.summarize()

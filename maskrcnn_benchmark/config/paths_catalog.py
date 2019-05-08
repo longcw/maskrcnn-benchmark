@@ -5,32 +5,46 @@ import os
 
 
 class DatasetCatalog(object):
-    DATA_DIR = "datasets"
+    DATA_DIR = "data"
     DATASETS = {
-        "coco_2017_train": {
-            "img_dir": "coco/train2017",
-            "ann_file": "coco/annotations/instances_train2017.json"
+        'PILSNU': {
+            "img_dir": "PILSNU/frames",
+            "ann_file": "PILSNU/coco_annotations/image_names.json"
         },
-        "coco_2017_val": {
-            "img_dir": "coco/val2017",
-            "ann_file": "coco/annotations/instances_val2017.json"
+        "posetrack_2018_train": {
+            "img_dir": "posetrack",
+            "ann_file": "posetrack/coco_annotations/posetrack_instances_train.json"
         },
+        "posetrack_2018_val": {
+            "img_dir": "posetrack",
+            "ann_file": "posetrack/coco_annotations/posetrack_instances_val.json"
+        },
+
         "coco_2014_train": {
-            "img_dir": "coco/train2014",
+            "img_dir": "coco/images/train2014",
             "ann_file": "coco/annotations/instances_train2014.json"
         },
         "coco_2014_val": {
-            "img_dir": "coco/val2014",
+            "img_dir": "coco/images/val2014",
             "ann_file": "coco/annotations/instances_val2014.json"
         },
         "coco_2014_minival": {
-            "img_dir": "coco/val2014",
+            "img_dir": "coco/images/val2014",
             "ann_file": "coco/annotations/instances_minival2014.json"
         },
         "coco_2014_valminusminival": {
-            "img_dir": "coco/val2014",
+            "img_dir": "coco/images/val2014",
             "ann_file": "coco/annotations/instances_valminusminival2014.json"
         },
+        "coco_2017_train": {
+            "img_dir": "coco/images/train2017",
+            "ann_file": "coco/annotations/instances_train2017.json"
+        },
+        "coco_2017_val": {
+            "img_dir": "coco/images/val2017",
+            "ann_file": "coco/annotations/instances_val2017.json"
+        },
+
         "keypoints_coco_2014_train": {
             "img_dir": "coco/train2014",
             "ann_file": "coco/annotations/person_keypoints_train2014.json",
@@ -47,6 +61,7 @@ class DatasetCatalog(object):
             "img_dir": "coco/val2014",
             "ann_file": "coco/annotations/person_keypoints_valminusminival2014.json",
         },
+
         "voc_2007_train": {
             "data_dir": "voc/VOC2007",
             "split": "train"
@@ -108,7 +123,7 @@ class DatasetCatalog(object):
 
     @staticmethod
     def get(name):
-        if "coco" in name:
+        if "coco" in name or "posetrack" in name or 'PILSNU' in name:
             data_dir = DatasetCatalog.DATA_DIR
             attrs = DatasetCatalog.DATASETS[name]
             args = dict(

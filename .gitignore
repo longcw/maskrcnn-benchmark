@@ -29,3 +29,5 @@ dist/
 /datasets
 /models
 /output
+inference/
+/data
