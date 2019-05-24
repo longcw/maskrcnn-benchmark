@@ -14,10 +14,10 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Convert dataset')
     parser.add_argument(
         '--outdir', help="output dir for json files",
-        default='/media/longc/LSSD/Public/PILSNU/coco_annotations', type=str)
+        required=True, type=str)
     parser.add_argument(
         '--datadir', help="data dir for annotations to be converted",
-        default='/media/longc/LSSD/Public/PILSNU', type=str)
+        required=True, type=str)
 
     return parser.parse_args()
 
@@ -36,11 +36,9 @@ def convert_tracking(data_dir, out_dir):
 
     images = []
     annotations = []
-    image_wh = None
     for i, image_filename in tqdm(enumerate(image_filenames), total=len(image_filenames)):
-        if image_wh is None:
-            image = cv2.imread(os.path.join(image_root, image_filename))
-            image_wh = (image.shape[1], image.shape[0])
+        image = cv2.imread(os.path.join(image_root, image_filename))
+        image_wh = (image.shape[1], image.shape[0])
 
         image_id = i + 1
 
