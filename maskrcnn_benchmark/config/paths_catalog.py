@@ -15,6 +15,11 @@ class DatasetCatalog(object):
             "img_dir": "PETS2009.S2.L1/frames",
             "ann_file": "PETS2009.S2.L1/coco_annotations/image_names.json"
         },
+        'coco_EPFL-Campus_Seq1': {
+            "img_dir": "MCMT/EPFL-Campus/Seq1/frames",
+            "ann_file": "MCMT/EPFL-Campus/Seq1/coco_annotations/image_names.json"
+        },
+
         "posetrack_2018_train": {
             "img_dir": "posetrack",
             "ann_file": "posetrack/coco_annotations/posetrack_instances_train.json"
