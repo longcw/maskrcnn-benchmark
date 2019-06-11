@@ -20,6 +20,21 @@ class DatasetCatalog(object):
             "ann_file": "MCMT/EPFL-Campus/Seq1/coco_annotations/image_names.json"
         },
 
+        'coco_EPFL-Campus_Seq2': {
+            "img_dir": "MCMT/EPFL-Campus/Seq2/frames",
+            "ann_file": "MCMT/EPFL-Campus/Seq2/coco_annotations/image_names.json"
+        },
+
+        'coco_EPFL-Terrace_Seq1': {
+            "img_dir": "MCMT/EPFL-Terrace/Seq1/frames",
+            "ann_file": "MCMT/EPFL-Terrace/Seq1/coco_annotations/image_names.json"
+        },
+
+        'coco_EPFL-Terrace_Seq2': {
+            "img_dir": "MCMT/EPFL-Terrace/Seq2/frames",
+            "ann_file": "MCMT/EPFL-Terrace/Seq2/coco_annotations/image_names.json"
+        },
+
         "posetrack_2018_train": {
             "img_dir": "posetrack",
             "ann_file": "posetrack/coco_annotations/posetrack_instances_train.json"
